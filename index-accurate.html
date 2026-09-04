@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>अपना भविष्य जानें</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap');
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    margin:0;
+    font-family:'Noto Sans Devanagari','Segoe UI',Arial,sans-serif;
+    color:#fff7df;
+    background:
+      radial-gradient(circle at 75% 18%, rgba(104,38,151,.38), transparent 28%),
+      radial-gradient(circle at 20% 70%, rgba(74,20,110,.35), transparent 30%),
+      linear-gradient(135deg,#06040e 0%,#11051c 48%,#08030f 100%);
+}
+body:before{
+    content:"";
+    position:fixed; inset:0; pointer-events:none; opacity:.28;
+    background-image:
+      radial-gradient(circle,#fff 1px,transparent 1px),
+      radial-gradient(circle,#e5a62b 1px,transparent 1px);
+    background-size:93px 93px,147px 147px;
+    background-position:10px 20px,50px 80px;
+}
+header{
+    height:94px; display:flex; align-items:center;
+    padding:0 5%; border-bottom:1px solid #6e4618;
+    background:rgba(5,3,12,.88); position:sticky; top:0; z-index:10;
+    backdrop-filter:blur(10px);
+}
+.logo{display:flex;align-items:center;gap:13px;min-width:330px}
+.om{
+    width:65px;height:65px;border:1px solid #e4aa31;border-radius:50%;
+    display:grid;place-items:center;font-size:37px;color:#f2bf4c;
+    box-shadow:0 0 22px rgba(230,157,36,.25);
+}
+.logo h2{margin:0;color:#f4c64f;font-size:25px}
+.logo small{color:#eee0c3;font-size:12px}
+nav{display:flex;gap:30px;margin-left:auto;align-items:center}
+nav a{color:#fff4dc;text-decoration:none;font-size:15px}
+nav a:hover{color:#f5bd43}
+.login{border:1px solid #dba532;border-radius:28px;padding:11px 24px!important}
+.hero{
+    min-height:620px;display:grid;grid-template-columns:1fr 1fr;
+    align-items:center;padding:55px 7%;gap:30px;position:relative;overflow:hidden;
+}
+.hero h1{
+    font-size:clamp(52px,6vw,82px);line-height:1.05;margin:20px 0;
+    color:#f3c650;text-shadow:0 0 22px rgba(230,157,36,.25);
+}
+.hero p{font-size:22px;line-height:1.8;color:#fff4df;max-width:560px}
+.ornament{text-align:center;color:#d99a2c;letter-spacing:10px;font-size:25px}
+.features{display:flex;gap:22px;margin:30px 0;flex-wrap:wrap}
+.feature{text-align:center;min-width:100px}
+.feature .ico{font-size:28px;color:#f2bb3d}
+.feature small{display:block;color:#eee0c7;margin-top:7px}
+.cta{
+    display:inline-flex;align-items:center;gap:18px;
+    background:linear-gradient(135deg,#7b145d,#d48b16);
+    border:2px solid #efc14d;border-radius:50px;padding:17px 34px;
+    color:#fff6dc;font-size:21px;font-weight:800;cursor:pointer;
+    box-shadow:0 0 28px rgba(220,143,27,.25);text-decoration:none;
+}
+.cta:hover{transform:translateY(-2px)}
+.note{text-align:center;color:#e9d9b8;margin-top:12px;font-size:13px}
+.zodiac{
+    width:min(470px,90vw);aspect-ratio:1;margin:auto;position:relative;
+    border-radius:50%;border:2px solid #d99b28;
+    box-shadow:0 0 55px rgba(228,152,31,.28), inset 0 0 50px rgba(183,76,255,.12);
+    background:radial-gradient(circle,#5c260b 0 5%,#25120d 6% 34%,transparent 35%),
+               radial-gradient(circle,#16091d 0 58%,#07030d 59% 100%);
+}
+.zodiac:before,.zodiac:after{
+    content:"";position:absolute;inset:8%;border:1px solid #d99b28;border-radius:50%;
+}
+.zodiac:after{inset:24%;border-color:#9b6820}
+.sun{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    font-size:64px;color:#ffbe28;text-shadow:0 0 35px #ff9d00}
+.sign{position:absolute;font-size:35px;color:#efb337}
+.s1{left:46%;top:3%}.s2{right:20%;top:12%}.s3{right:4%;top:31%}.s4{right:10%;bottom:22%}
+.s5{right:30%;bottom:3%}.s6{left:45%;bottom:0}.s7{left:19%;bottom:7%}.s8{left:3%;bottom:27%}
+.s9{left:4%;top:30%}.s10{left:17%;top:12%}.s11{left:32%;top:3%}.s12{right:4%;top:7%}
+.form-wrap{padding:10px 6% 55px}
+.card{
+    max-width:1050px;margin:auto;padding:38px 45px;border:1px solid #9a6420;
+    border-radius:25px;background:linear-gradient(145deg,rgba(35,7,48,.95),rgba(13,4,25,.96));
+    box-shadow:0 15px 55px rgba(0,0,0,.4);
+}
+.section-title{text-align:center;color:#f4c64f;font-size:29px;margin:0 0 30px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:23px}
+label{display:block;margin-bottom:8px;color:#f7e6c5}
+input{
+    width:100%;padding:15px 16px;border-radius:11px;border:1px solid #76501f;
+    background:#0e0718;color:#fff;font-size:16px;outline:none;
+}
+input:focus,select:focus{border-color:#e7b33d;box-shadow:0 0 0 3px rgba(231,179,61,.1)}
+.full{grid-column:1/-1}
+.form-button{text-align:center;margin-top:28px}
+.form-button button{
+    border:0;border-radius:40px;padding:17px 48px;font-size:20px;font-weight:800;
+    color:#3c1900;background:linear-gradient(#ffe17a,#d9931b);
+    cursor:pointer;box-shadow:0 7px 25px rgba(215,145,24,.28);
+}
+.security{text-align:center;margin-top:14px;color:#d8c8ad;font-size:13px}
+.results{display:none;margin-top:30px}
+.result-box{padding:25px;border:1px solid #7d531c;border-radius:18px;background:#10071a}
+.result-box h3{color:#f4c64f}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;padding:20px 6% 55px}
+.mini{border:1px solid #714b1c;border-radius:18px;padding:24px 12px;text-align:center;background:rgba(19,7,28,.8)}
+.mini .big{font-size:35px;color:#efb63d}.mini h3{font-size:16px}
+footer{text-align:center;border-top:1px solid #5f3d17;padding:22px;color:#cdbb9e}
+@media(max-width:800px){
+  #country,#state,#city{min-width:0}
+  .full > div{grid-template-columns:1fr!important;}
+
+ header{height:auto;padding:15px 5%;flex-wrap:wrap}.logo{min-width:0}.logo h2{font-size:19px}
+ nav{display:none}.hero{grid-template-columns:1fr;text-align:center}.hero p{margin:auto}
+ .features{justify-content:center}.zodiac{width:330px}.card{padding:25px 18px}.grid{grid-template-columns:1fr}.full{grid-column:auto}
+ .cards{grid-template-columns:1fr 1fr}.hero h1{font-size:52px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="om">ॐ</div>
+    <div><h2>अपना भविष्य जानें</h2><small>ज्योतिष से जानें अपने जीवन का रहस्य</small></div>
+  </div>
+  <nav>
+    <a href="#">होम</a><a href="#form">भविष्यफल</a><a href="#features">राशिफल</a><a href="#">ब्लॉग</a><a href="#">संपर्क करें</a><a class="login" href="#">♙ लॉगिन</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="ornament">✦ ── ◇ ── ✦</div>
+    <h1>अपना<br>भविष्य जानें</h1>
+    <p>अपनी जन्म जानकारी भरें और जानें<br>अपने जीवन का पूरा भविष्य</p>
+
+    <div class="features">
+      <div class="feature"><div class="ico">♢</div><small>100% गोपनीयता</small></div>
+      <div class="feature"><div class="ico">♙</div><small>विशेषज्ञ ज्योतिषी</small></div>
+      <div class="feature"><div class="ico">ϟ</div><small>तुरंत परिणाम</small></div>
+      <div class="feature"><div class="ico">✥</div><small>सटीक भविष्यवाणी</small></div>
+    </div>
+
+    <a class="cta" href="#form">✦ अपना भविष्य जानें <span>➜</span></a>
+    <div class="note">यह सेवा पूर्णतः निःशुल्क है</div>
+  </div>
+
+  <div class="zodiac">
+    <span class="sign s1">♈</span><span class="sign s2">♉</span><span class="sign s3">♊</span>
+    <span class="sign s4">♋</span><span class="sign s5">♌</span><span class="sign s6">♍</span>
+    <span class="sign s7">♎</span><span class="sign s8">♏</span><span class="sign s9">♐</span>
+    <span class="sign s10">♑</span><span class="sign s11">♒</span><span class="sign s12">♓</span>
+    <div class="sun">☼</div>
+  </div>
+</section>
+
+<section class="form-wrap" id="form">
+  <div class="card">
+    <h2 class="section-title">✦ अपनी जन्म जानकारी भरें ✦</h2>
+    <form id="futureForm">
+      <div class="grid">
+        <div><label>♙ आपका नाम</label><input id="name" required placeholder="अपना पूरा नाम लिखें"></div>
+        <div><label>▣ जन्म तिथि</label><input id="dob" type="date" required></div>
+        <div><label>◷ जन्म समय</label><input id="time" type="time" required></div>
+        <div class="full">
+<label>🌍 जन्म स्थान</label>
+<div style="display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:12px;">
+<input id="country" required placeholder="देश — जैसे India">
+<input id="state" required placeholder="राज्य / प्रांत — जैसे Haryana">
+<input id="city" required placeholder="शहर — जैसे Ambala">
+</div>
+<div style="margin-top:8px;color:#cdbb9e;font-size:12px;">Submit पर शहर के coordinates और उस तारीख का timezone automatically resolve होगा।</div>
+</div>
+<div>
+<label>⚧ लिंग</label>
+  <select id="gender" required style="width:100%;padding:15px 16px;border-radius:11px;border:1px solid #76501f;background:#0e0718;color:#fff;font-size:16px;outline:none;">
+    <option value="">अपना लिंग चुनें</option>
+    <option value="पुरुष">पुरुष</option>
+    <option value="महिला">महिला</option>
+    <option value="अन्य / बताना नहीं चाहते">अन्य / बताना नहीं चाहते</option>
+  </select>
+</div>
+      </div>
+      <div class="form-button"><button type="submit">ॐ &nbsp; ✦ अपना भविष्य जानें &nbsp; ➜</button></div>
+      <div class="security">🔒 आपकी जानकारी सुरक्षित और गोपनीय है</div>
+    </form>
+
+    <div class="results" id="results">
+      <div class="result-box">
+        <h3 id="hello"></h3>
+        <p id="summary"></p>
+        <p>अभी यह पहला पेज है। अगले चरण में इसी जगह वास्तविक ज्योतिषीय गणना और विस्तृत भविष्यफल जोड़ा जा सकता है।</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2 class="section-title" id="features">आपको क्या मिलेगा?</h2>
+<section class="cards">
+  <div class="mini"><div class="big">◉</div><h3>सटीक भविष्यवाणी</h3></div>
+  <div class="mini"><div class="big">☾</div><h3>राशि और लग्न विश्लेषण</h3></div>
+  <div class="mini"><div class="big">↗</div><h3>करियर और धन योग</h3></div>
+  <div class="mini"><div class="big">♡</div><h3>प्रेम और विवाह योग</h3></div>
+  <div class="mini"><div class="big">♧</div><h3>स्वास्थ्य और उपाय</h3></div>
+</section>
+
+<footer>ॐ &nbsp; ग्रहों की चाल, भविष्य का हाल &nbsp; | &nbsp; ज्योतिष है विज्ञान, बदलता है जीवन &nbsp; | &nbsp; जानें भविष्य, बनाएं बेहतर कल &nbsp; ॐ</footer>
+
+<script>
+
+const locationData = {
+  "भारत": {
+    "हरियाणा": ["अंबाला","गुरुग्राम","फरीदाबाद","हिसार","करनाल","पानीपत","रोहतक","पंचकूला","सोनीपत","यमुनानगर"],
+    "पंजाब": ["अमृतसर","लुधियाना","जालंधर","पटियाला","बठिंडा","मोहाली","पठानकोट"],
+    "चंडीगढ़": ["चंडीगढ़"],
+    "दिल्ली": ["नई दिल्ली","दिल्ली"],
+    "उत्तर प्रदेश": ["लखनऊ","कानपुर","वाराणसी","आगरा","प्रयागराज","मेरठ","नोएडा","गाजियाबाद","गोरखपुर"],
+    "राजस्थान": ["जयपुर","जोधपुर","उदयपुर","कोटा","अजमेर","बीकानेर"],
+    "महाराष्ट्र": ["मुंबई","पुणे","नागपुर","नाशिक","ठाणे","औरंगाबाद","नवी मुंबई"],
+    "गुजरात": ["अहमदाबाद","सूरत","वडोदरा","राजकोट","गांधीनगर","भावनगर"],
+    "मध्य प्रदेश": ["भोपाल","इंदौर","ग्वालियर","जबलपुर","उज्जैन"],
+    "उत्तराखंड": ["देहरादून","हरिद्वार","ऋषिकेश","हल्द्वानी","नैनीताल"],
+    "हिमाचल प्रदेश": ["शिमला","मनाली","धर्मशाला","सोलन","कुल्लू"],
+    "जम्मू और कश्मीर": ["श्रीनगर","जम्मू","अनंतनाग","बारामूला"],
+    "बिहार": ["पटना","गया","मुजफ्फरपुर","भागलपुर","दरभंगा"],
+    "झारखंड": ["रांची","जमशेदपुर","धनबाद","बोकारो"],
+    "पश्चिम बंगाल": ["कोलकाता","हावड़ा","दुर्गापुर","सिलीगुड़ी","आसनसोल"],
+    "ओडिशा": ["भुवनेश्वर","कटक","राउरकेला","पुरी","संबलपुर"],
+    "छत्तीसगढ़": ["रायपुर","भिलाई","बिलासपुर","दुर्ग"],
+    "गोवा": ["पणजी","वास्को द गामा","मडगांव"],
+    "कर्नाटक": ["बेंगलुरु","मैसूर","हुबली","मैंगलोर","बेलगावी"],
+    "तमिलनाडु": ["चेन्नई","कोयंबटूर","मदुरै","तिरुचिरापल्ली","सलेम"],
+    "केरल": ["तिरुवनंतपुरम","कोच्चि","कोझिकोड","त्रिशूर","कोल्लम"],
+    "तेलंगाना": ["हैदराबाद","वारंगल","निजामाबाद","करीमनगर"],
+    "आंध्र प्रदेश": ["विशाखापट्टनम","विजयवाड़ा","गुंटूर","तिरुपति","नेल्लोर"],
+    "असम": ["गुवाहाटी","डिब्रूगढ़","सिलचर","जोरहाट"],
+    "मेघालय": ["शिलांग","तुरा"],
+    "सिक्किम": ["गंगटोक"],
+    "त्रिपुरा": ["अगरतला"],
+    "मणिपुर": ["इंफाल"],
+    "मिजोरम": ["आइजोल"],
+    "नागालैंड": ["कोहिमा","दीमापुर"],
+    "अरुणाचल प्रदेश": ["ईटानगर","तवांग","नाहरलागुन"],
+    "पुदुचेरी": ["पुदुचेरी"],
+    "लद्दाख": ["लेह","कारगिल"]
+  },
+  "United States": {"New York": ["New York City","Buffalo","Rochester"], "California": ["Los Angeles","San Francisco","San Diego","San Jose"], "Texas": ["Houston","Dallas","Austin","San Antonio"], "Florida": ["Miami","Orlando","Tampa"]},
+  "United Kingdom": {"England": ["London","Manchester","Birmingham","Liverpool","Leeds"], "Scotland": ["Edinburgh","Glasgow"], "Wales": ["Cardiff","Swansea"], "Northern Ireland": ["Belfast"]},
+  "Canada": {"Ontario": ["Toronto","Ottawa","Mississauga"], "Quebec": ["Montreal","Quebec City"], "British Columbia": ["Vancouver","Victoria"], "Alberta": ["Calgary","Edmonton"]},
+  "Australia": {"New South Wales": ["Sydney","Newcastle","Wollongong"], "Victoria": ["Melbourne","Geelong"], "Queensland": ["Brisbane","Gold Coast","Cairns"], "Western Australia": ["Perth","Fremantle"]},
+  "United Arab Emirates": {"Dubai": ["Dubai"], "Abu Dhabi": ["Abu Dhabi"], "Sharjah": ["Sharjah"]},
+  "Singapore": {"Singapore": ["Singapore"]},
+  "Japan": {"Tokyo": ["Tokyo"], "Osaka": ["Osaka"], "Kyoto": ["Kyoto"]},
+  "Germany": {"Berlin": ["Berlin"], "Bavaria": ["Munich"], "Hesse": ["Frankfurt"]},
+  "France": {"Île-de-France": ["Paris"], "Auvergne-Rhône-Alpes": ["Lyon"]},
+  "Italy": {"Lazio": ["Rome"], "Lombardy": ["Milan"]},
+  "Spain": {"Madrid": ["Madrid"], "Catalonia": ["Barcelona"]},
+  "Nepal": {"Bagmati": ["Kathmandu"], "Gandaki": ["Pokhara"]},
+  "Pakistan": {"Punjab": ["Lahore","Faisalabad","Rawalpindi"], "Sindh": ["Karachi","Hyderabad"], "Islamabad Capital Territory": ["Islamabad"]},
+  "Bangladesh": {"Dhaka": ["Dhaka"], "Chattogram": ["Chattogram"]},
+  "Sri Lanka": {"Western": ["Colombo"], "Central": ["Kandy"]},
+  "Saudi Arabia": {"Riyadh": ["Riyadh"], "Makkah": ["Mecca","Jeddah"], "Madinah": ["Medina"]},
+  "Qatar": {"Doha": ["Doha"]},
+  "South Africa": {"Gauteng": ["Johannesburg","Pretoria"], "Western Cape": ["Cape Town"]},
+  "New Zealand": {"Auckland": ["Auckland"], "Wellington": ["Wellington"], "Canterbury": ["Christchurch"]}
+};
+
+const countryEl=document.getElementById('country');
+const stateEl=document.getElementById('state');
+const cityEl=document.getElementById('city');
+
+function fillSelect(el, items, placeholder){
+  el.innerHTML='<option value="">'+placeholder+'</option>';
+  items.forEach(item=>{
+    const o=document.createElement('option');
+    o.value=item; o.textContent=item; el.appendChild(o);
+  });
+  el.disabled=items.length===0;
+}
+fillSelect(countryEl,Object.keys(locationData),'देश चुनें');
+
+countryEl.addEventListener('change',()=>{
+  const states=locationData[countryEl.value]||{};
+  fillSelect(stateEl,Object.keys(states),'राज्य / प्रांत चुनें');
+  fillSelect(cityEl,[],'पहले राज्य चुनें');
+});
+stateEl.addEventListener('change',()=>{
+  const cities=(locationData[countryEl.value]||{})[stateEl.value]||[];
+  fillSelect(cityEl,cities,'शहर चुनें');
+});
+
+document.getElementById('futureForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const name=document.getElementById('name').value.trim();
+  const dob=document.getElementById('dob').value;
+  const time=document.getElementById('time').value;
+  const country=document.getElementById('country').value.trim();
+  const state=document.getElementById('state').value.trim();
+  const city=document.getElementById('city').value.trim();
+  const gender=document.getElementById('gender').value;
+
+  if(!name || !dob || !time || !country || !state || !city || !gender){
+    alert('कृपया देश, राज्य/प्रांत, शहर और बाकी सभी जानकारी भरें।');
+    return;
+  }
+
+  const place=city+', '+state+', '+country;
+  const params=new URLSearchParams({name, dob, time, place, country, state, city, gender});
+  window.location.href='birth-chart.html?'+params.toString();
+});
+</script>
+</body>
+</html>

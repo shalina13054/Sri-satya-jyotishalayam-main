@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>जन्म कुंडली | Vedic Birth Chart</title>
+<meta name="description" content="Professional Vedic birth chart with Lagna, Rashi, Nakshatra, planetary positions and D1 Kundli.">
+<style>
+:root{
+  --bg:#07050c;--surface:#100b17;--surface2:#160f20;--line:#3a2a48;
+  --gold:#e8b94e;--gold2:#ffd978;--text:#f8f1e4;--muted:#b7a9bf;
+  --red:#c96b57;--green:#6fc38a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:
+  radial-gradient(circle at 80% 0%,rgba(102,47,140,.20),transparent 32%),
+  radial-gradient(circle at 10% 15%,rgba(180,120,35,.08),transparent 28%),var(--bg);
+  color:var(--text);font-family:"Noto Sans Devanagari","Segoe UI",Arial,sans-serif;
+}
+a{color:inherit}.container{width:min(1180px,calc(100% - 36px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(7,5,12,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px}.brandmark{width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-size:22px}
+.brand h1{font-size:18px;margin:0}.brand p{font-size:11px;color:var(--muted);margin:2px 0 0}
+.status-pill{border:1px solid var(--line);padding:8px 12px;border-radius:999px;color:var(--muted);font-size:12px}
+.hero{padding:34px 0 22px}.hero-grid{display:grid;grid-template-columns:1.4fr .8fr;gap:18px}
+.hero-card,.card{background:linear-gradient(145deg,rgba(22,15,32,.96),rgba(12,8,18,.96));border:1px solid var(--line);border-radius:20px;box-shadow:0 18px 55px rgba(0,0,0,.20)}
+.hero-card{padding:28px}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.hero h2{font-size:34px;margin:8px 0 7px}.hero h2 span{color:var(--gold2)}
+.hero-sub{color:var(--muted);margin:0;line-height:1.7}
+.profile{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:20px}
+.info{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.015)}
+.info small{display:block;color:var(--muted);font-size:11px;margin-bottom:4px}.info b{font-size:13px;word-break:break-word}
+.engine-box{padding:22px;display:flex;flex-direction:column;justify-content:center}
+.engine-box h3{margin:0 0 10px;color:var(--gold2)}.engine-box p{color:var(--muted);font-size:13px;line-height:1.7;margin:0 0 14px}
+.engine-ok{color:var(--green)!important}
+main{padding-bottom:70px}.status{padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:#0d0913;color:var(--muted);font-size:13px;margin-bottom:18px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.metric{padding:18px;background:linear-gradient(160deg,#171020,#0e0915);border:1px solid var(--line);border-radius:16px;position:relative;overflow:hidden}
+.metric:after{content:"";position:absolute;right:-30px;top:-35px;width:90px;height:90px;border-radius:50%;border:1px solid rgba(232,185,78,.12)}
+.metric small{color:var(--muted);font-size:12px}.metric strong{display:block;color:var(--gold2);font-size:22px;margin-top:6px}.metric em{font-style:normal;color:var(--muted);font-size:11px}
+.section-title{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}.section-title h2{margin:0;font-size:21px;color:var(--text)}.section-title span{font-size:12px;color:var(--muted)}
+.card{padding:22px;margin-bottom:18px}
+.chart-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);gap:24px;align-items:center}
+.chart-wrap{width:min(590px,100%);margin:auto}.kundli{position:relative;width:100%;aspect-ratio:1;background:#09060e;border:2px solid var(--gold);overflow:hidden;box-shadow:0 0 0 7px rgba(232,185,78,.035),0 18px 50px rgba(0,0,0,.28)}
+.kundli .diamond{position:absolute;left:16%;top:16%;width:68%;height:68%;border:1px solid var(--gold);transform:rotate(45deg)}
+.kundli .vline,.kundli .hline{position:absolute;background:var(--gold);opacity:.85}
+.kundli .vline{width:1px;height:100%;left:50%;top:0}.kundli .hline{height:1px;width:100%;left:0;top:50%}
+.kundli .diag{position:absolute;width:141.5%;height:1px;left:-20.75%;top:50%;background:var(--gold);opacity:.85;transform:rotate(45deg)}
+.kundli .diag.d2{transform:rotate(-45deg)}
+.kcell{position:absolute;width:23%;min-height:48px;text-align:center;z-index:3;line-height:1.25;font-size:12px;color:var(--muted)}
+.kcell .house{display:block;color:#806d91;font-size:10px;margin-bottom:2px}.kcell b{display:block;color:var(--gold2);font-size:12px}.kcell .planets{color:var(--text);font-size:11px;margin-top:3px;word-break:break-word}
+.k1{left:38.5%;top:3.5%}.k2{right:3%;top:17%}.k3{right:3%;top:40%}.k4{right:3%;bottom:17%}.k5{left:38.5%;bottom:3.5%}.k6{left:3%;bottom:17%}.k7{left:3%;top:40%}.k8{left:3%;top:17%}.k9{left:18%;top:15%}.k10{right:18%;top:15%}.k11{right:18%;bottom:15%}.k12{left:18%;bottom:15%}
+.center-om{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;color:var(--gold);font-size:28px}
+.chart-side{display:grid;gap:12px}.key-box{border:1px solid var(--line);border-radius:15px;padding:16px;background:rgba(255,255,255,.015)}
+.key-box h3{margin:0 0 10px;color:var(--gold2);font-size:15px}.key-row{display:flex;justify-content:space-between;gap:15px;padding:8px 0;border-bottom:1px solid rgba(58,42,72,.7);font-size:13px}.key-row:last-child{border-bottom:0}.key-row span{color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:7px}.tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:#d8cadf;background:#0c0811;font-size:11px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:12px 13px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}th{color:var(--gold2);background:#130c1b;font-weight:600;position:sticky;top:0}td{color:#e7ddea}tbody tr:hover{background:rgba(232,185,78,.035)}td b{color:var(--text)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.dasha{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.dash{border:1px solid var(--line);border-radius:12px;padding:11px;background:#0c0811;color:var(--muted);font-size:11px}.dash b{color:var(--gold2);font-size:13px}.muted{color:var(--muted);font-size:12px;line-height:1.7}
+.footer-actions{display:flex;justify-content:center;margin-top:8px}.back{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--gold);color:var(--gold2);border-radius:999px;padding:11px 20px;font-size:13px}
+@media(max-width:900px){.hero-grid,.chart-grid,.two{grid-template-columns:1fr}.profile{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:repeat(2,1fr)}.chart-wrap{width:min(650px,100%)}}
+@media(max-width:560px){.container{width:min(100% - 20px,1180px)}.nav{height:62px}.brand h1{font-size:15px}.brandmark{width:36px;height:36px}.status-pill{font-size:10px;padding:6px 8px}.hero{padding-top:20px}.hero-card{padding:20px}.hero h2{font-size:25px}.profile,.summary{grid-template-columns:1fr 1fr}.info{padding:10px}.info b{font-size:12px}.card{padding:15px;border-radius:16px}.section-title h2{font-size:18px}.chart-grid{gap:14px}.kcell{font-size:9px}.kcell b{font-size:10px}.kcell .house{font-size:8px}.kcell .planets{font-size:8px}.center-om{font-size:22px}.dasha{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="container nav">
+<div class="brand"><div class="brandmark">ॐ</div><div><h1>जन्म कुंडली</h1><p>Vedic Birth Chart • Sidereal / Lahiri</p></div></div>
+<div id="engine" class="status-pill">Calculation loading…</div>
+</div>
+</header>
+
+<div class="container hero">
+<div class="hero-grid">
+<section class="hero-card">
+<div class="eyebrow">आपकी व्यक्तिगत जन्म कुंडली</div>
+<h2>नमस्ते, <span id="name">—</span> जी 🙏</h2>
+<p class="hero-sub">आपकी जन्म तिथि, सटीक समय और जन्म स्थान के आधार पर तैयार किया गया वैदिक जन्म चार्ट।</p>
+<div class="profile">
+<div class="info"><small>लिंग</small><b id="gender">—</b></div>
+<div class="info"><small>जन्म तिथि</small><b id="dob">—</b></div>
+<div class="info"><small>जन्म समय</small><b id="time">—</b></div>
+<div class="info"><small>जन्म स्थान</small><b id="place">—</b></div>
+<div class="info"><small>पद्धति</small><b>Lahiri</b></div>
+</div>
+</section>
+<section class="hero-card engine-box">
+<h3>✦ गणना विवरण</h3>
+<p id="loc">स्थान और timezone resolve हो रहे हैं…</p>
+<p class="engine-ok">✓ Sidereal zodiac<br>✓ Lahiri ayanamsha<br>✓ Whole-sign D1 houses</p>
+</section>
+</div>
+</div>
+
+<main class="container">
+<div id="status" class="status">कुंडली calculate की जा रही है…</div>
+
+<section class="summary">
+<div class="metric"><small>🌅 लग्न (Ascendant)</small><strong id="lagna">—</strong><em>आपकी rising sign</em></div>
+<div class="metric"><small>🌙 चंद्र राशि</small><strong id="rashi">—</strong><em>Moon sign / Janma Rashi</em></div>
+<div class="metric"><small>⭐ जन्म नक्षत्र</small><strong id="nak">—</strong><em>Janma Nakshatra</em></div>
+<div class="metric"><small>🔹 नक्षत्र पाद</small><strong id="pada">—</strong><em>Nakshatra Pada</em></div>
+</section>
+
+<section class="card">
+<div class="section-title"><h2>🔯 D1 राशि कुंडली</h2><span>राशि + भाव + ग्रह स्थिति</span></div>
+<div class="chart-grid">
+<div class="chart-wrap">
+<div class="kundli">
+<div class="diamond"></div><div class="vline"></div><div class="hline"></div><div class="diag"></div><div class="diag d2"></div>
+<div class="center-om">ॐ</div>
+<div class="kcell k1" id="bh1"></div><div class="kcell k2" id="bh2"></div><div class="kcell k3" id="bh3"></div><div class="kcell k4" id="bh4"></div>
+<div class="kcell k5" id="bh5"></div><div class="kcell k6" id="bh6"></div><div class="kcell k7" id="bh7"></div><div class="kcell k8" id="bh8"></div>
+<div class="kcell k9" id="bh9"></div><div class="kcell k10" id="bh10"></div><div class="kcell k11" id="bh11"></div><div class="kcell k12" id="bh12"></div>
+</div>
+</div>
+<div class="chart-side">
+<div class="key-box"><h3>मुख्य जन्म संकेत</h3>
+<div class="key-row"><span>लग्न राशि</span><b id="lagna2">—</b></div>
+<div class="key-row"><span>चंद्र राशि</span><b id="rashi2">—</b></div>
+<div class="key-row"><span>जन्म नक्षत्र</span><b id="nak2">—</b></div>
+<div class="key-row"><span>पाद</span><b id="pada2">—</b></div>
+</div>
+<div class="key-box"><h3>तकनीकी विवरण</h3>
+<div class="key-row"><span>अयनांश</span><b id="ayan">—</b></div>
+<div class="key-row"><span>House system</span><b>Whole Sign</b></div>
+<div class="key-row"><span>Coordinate</span><b id="coords">—</b></div>
+</div>
+<div class="key-box"><h3>राशि क्रम</h3><div id="houses" class="tags"></div></div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<div class="section-title"><h2>🪐 ग्रह स्थिति</h2><span>Sidereal planetary longitudes</span></div>
+<div class="table-wrap"><table><thead><tr><th>ग्रह</th><th>राशि</th><th>अंश</th><th>भाव</th><th>नक्षत्र</th><th>पाद</th><th>गति</th></tr></thead><tbody id="rows"></tbody></table></div>
+</section>
+
+<div class="two">
+<section class="card"><div class="section-title"><h2>⭐ जन्म नक्षत्र</h2></div><div id="nakinfo"></div></section>
+<section class="card"><div class="section-title"><h2>🕉️ विम्शोत्तरी महादशा</h2></div><div id="dasha" class="dasha"></div><p id="dashanote" class="muted"></p></section>
+</div>
+
+<section class="card">
+<div class="section-title"><h2>🏠 भाव सारांश</h2><span>लग्न से whole-sign house sequence</span></div>
+<div id="houses2" class="tags"></div>
+</section>
+
+<section class="card">
+<p class="muted">नोट: ग्रहों की astronomical positions और Vedic chart placement को calculation engine से निकाला जाता है। ज्योतिषीय interpretation को अलग चरण में जोड़ा जा सकता है। जन्म समय/स्थान में छोटी गलती से लग्न और भाव बदल सकते हैं।</p>
+<div class="footer-actions"><a class="back" href="index.html">← जन्म विवरण बदलें</a></div>
+</section>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const copy=(a,b)=>{const x=document.getElementById(a),y=document.getElementById(b);if(x&&y)y.textContent=x.textContent};
+ const watch=new MutationObserver(()=>{copy("lagna","lagna2");copy("rashi","rashi2");copy("nak","nak2");copy("pada","pada2");});
+ watch.observe(document.body,{subtree:true,childList:true,characterData:true});
+});
+</script>
+<script type="module">
+import SwissEph from 'https://cdn.jsdelivr.net/gh/prolaxu/swisseph-wasm@v0.1.0/src/swisseph.js';
+const q=new URLSearchParams(location.search),$=id=>document.getElementById(id);
+for(const id of ['name','gender','dob','time','place'])$(id).textContent=q.get(id)||'—';
+const signs=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुंभ','मीन'];
+const naks=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्वाफाल्गुनी','उत्तराफाल्गुनी','हस्त','चित्रा','स्वाती','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रवण','धनिष्ठा','शतभिषा','पूर्वाभाद्रपद','उत्तराभाद्रपद','रेवती'];
+const nlords=['केतु','शुक्र','सूर्य','चंद्र','मंगल','राहु','गुरु','शनि','बुध','केतु','शुक्र','सूर्य','चंद्र','मंगल','राहु','गुरु','शनि','बुध','केतु','शुक्र','सूर्य','चंद्र','मंगल','राहु','गुरु','शनि','बुध'];
+const order=['केतु','शुक्र','सूर्य','चंद्र','मंगल','राहु','गुरु','शनि','बुध'],years={केतु:7,शुक्र:20,सूर्य:6,चंद्र:10,मंगल:7,राहु:18,गुरु:16,शनि:19,बुध:17};
+const norm=x=>(x%360+360)%360, sg=x=>Math.floor(norm(x)/30), ins=x=>norm(x)%30;
+function dms(x){let d=Math.floor(x),m=Math.floor((x-d)*60),s=Math.round((((x-d)*60)-m)*60);if(s>=60){s=0;m++}if(m>=60){m=0;d++}return `${d}° ${m}′ ${s}″`}
+function nk(x){let sp=360/27,i=Math.floor(norm(x)/sp),w=norm(x)-i*sp;return {name:naks[i],lord:nlords[i],pada:Math.floor(w/(sp/4))+1}}
+async function geo(place){let r=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q='+encodeURIComponent(place),{headers:{'Accept-Language':'en'}});let a=await r.json();if(!a.length)throw Error('जन्म स्थान नहीं मिला');return {lat:+a[0].lat,lon:+a[0].lon,label:a[0].display_name}}
+async function zone(lat,lon){let r=await fetch(`https://timeapi.io/api/TimeZone/coordinate?latitude=${lat}&longitude=${lon}`);if(!r.ok)throw Error('timezone resolve नहीं हुआ');let a=await r.json();return a.timeZone||a.timezone||a.ianaTimeZone||null}
+function offsetLocal(date,time,z){const [Y,M,D]=date.split('-').map(Number),[h,m]=time.split(':').map(Number),g=new Date(Date.UTC(Y,M-1,D,h,m));const ps=new Intl.DateTimeFormat('en-US',{timeZone:z,timeZoneName:'longOffset',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(g);const v=(ps.find(x=>x.type==='timeZoneName')?.value||'GMT+00:00').match(/GMT([+-])(\d\d):(\d\d)/);return v?(v[1]=='-'?-1:1)*(+v[2]+(+v[3]/60)):0}
+function whole(lon,a){return (sg(lon)-a+12)%12+1}
+function draw(a,ps){for(let h=1;h<=12;h++){let s=(a+h-1)%12,pl=ps.filter(x=>whole(x.lon,a)==h).map(x=>x.sym+x.name).join(' ');$('bh'+h).innerHTML=`भाव ${h}<br><b>${signs[s]}</b>${pl?'<br>'+pl:''}`}}
+function dash(moon,birth){let n=nk(moon),i=order.indexOf(n.lord),sp=360/27,rem=(1-(norm(moon)%sp)/sp)*years[n.lord],start=new Date(birth),arr=[];for(let j=0;j<9;j++){let L=order[(i+j)%9],end=new Date(start.getTime()+years[L]*365.2425*86400000);arr.push(`<div class="dash"><b>${L}</b><br>${start.toLocaleDateString('en-GB')} → ${end.toLocaleDateString('en-GB')}</div>`);start=end}$('dasha').innerHTML=arr.join('');$('dashanote').textContent=`जन्म नक्षत्र स्वामी ${n.lord}; पहली महादशा का अनुमानित balance ${rem.toFixed(2)} वर्ष।`}
+async function run(){
+try{
+let swe=new SwissEph();await swe.initSwissEph();$('engine').textContent='Swiss Ephemeris ✓';
+let place=q.get('place')||'',g=await geo(place),z=await zone(g.lat,g.lon);if(!z)throw Error('IANA timezone नहीं मिला');
+let off=offsetLocal(q.get('dob'),q.get('time'),z),[Y,M,D]=q.get('dob').split('-').map(Number),[h,m]=q.get('time').split(':').map(Number),jd=swe.julday(Y,M,D,h+m/60-off);
+swe.set_sid_mode(swe.SE_SIDM_LAHIRI,0,0);let flags=swe.SEFLG_SWIEPH|swe.SEFLG_SPEED|swe.SEFLG_SIDEREAL;
+let hs=swe.houses_ex(jd,swe.SEFLG_SIDEREAL,g.lat,g.lon,'P'),asc=norm(hs.ascmc[0]),a=sg(asc);
+$('lagna').textContent=signs[a]+' '+dms(ins(asc));$('ayan').textContent=swe.get_ayanamsa_ut(jd).toFixed(4)+'°';$('loc').textContent=`${g.label} • ${g.lat.toFixed(5)}, ${g.lon.toFixed(5)} • ${z} • UTC${off>=0?'+':''}${off}`;
+const specs=[['सूर्य','Sun','SE_SUN','☉'],['चंद्र','Moon','SE_MOON','☽'],['मंगल','Mars','SE_MARS','♂'],['बुध','Mercury','SE_MERCURY','☿'],['गुरु','Jupiter','SE_JUPITER','♃'],['शुक्र','Venus','SE_VENUS','♀'],['शनि','Saturn','SE_SATURN','♄'],['राहु','True Node','SE_TRUE_NODE','☊']];
+let ps=specs.map(([name,key,c,sym])=>{let p=swe.calc_ut(jd,swe[c],flags),lon=norm(p[0]);return{name,sym,lon,speed:p[3],n:nk(lon)}});let r=ps.find(x=>x.name==='राहु'),kl=norm(r.lon+180);ps.push({name:'केतु',sym:'☋',lon:kl,speed:-r.speed,n:nk(kl)});
+let moon=ps.find(x=>x.name==='चंद्र');$('rashi').textContent=signs[sg(moon.lon)];$('nak').textContent=moon.n.name;$('pada').textContent=moon.n.pada;
+$('rows').innerHTML=ps.map(x=>`<tr><td>${x.sym} <b>${x.name}</b></td><td>${signs[sg(x.lon)]}</td><td>${dms(ins(x.lon))}</td><td>${whole(x.lon,a)}</td><td>${x.n.name}</td><td>${x.n.pada}</td><td>${x.name==='राहु'||x.name==='केतु'||x.speed<0?'वक्री ℞':'सीधी'}</td></tr>`).join('');
+$('nakinfo').innerHTML=`<span class="tag">नक्षत्र: ${moon.n.name}</span><span class="tag">स्वामी: ${moon.n.lord}</span><span class="tag">पाद: ${moon.n.pada}</span><p class="muted">चंद्र: ${dms(ins(moon.lon))} ${signs[sg(moon.lon)]}</p>`;
+draw(a,ps);$('coords').textContent=`${g.lat.toFixed(4)}, ${g.lon.toFixed(4)}`;dash(moon.lon,new Date(Date.UTC(Y,M-1,D,h,m)-off*3600000));let hsx=[];for(let i=1;i<=12;i++)hsx.push(`<span class="tag">भाव ${i}: ${signs[(a+i-1)%12]}</span>`);$('houses').innerHTML=hsx.join('');$('houses2').innerHTML=hsx.join('');
+$('status').textContent='कुंडली तैयार है — exact birth time, resolved coordinates, historical timezone offset और Lahiri sidereal ephemeris के साथ।';swe.close();
+}catch(e){console.error(e);$('status').textContent='Calculation error: '+e.message;$('engine').textContent='Error'}}
+run();
+
+</script>
