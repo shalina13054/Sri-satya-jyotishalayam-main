@@ -154,46 +154,190 @@ main{padding-bottom:70px}.status{padding:13px 16px;border:1px solid var(--line);
 </section>
 </main>
 
-<script>
-document.addEventListener("DOMContentLoaded",()=>{
- const copy=(a,b)=>{const x=document.getElementById(a),y=document.getElementById(b);if(x&&y)y.textContent=x.textContent};
- const watch=new MutationObserver(()=>{copy("lagna","lagna2");copy("rashi","rashi2");copy("nak","nak2");copy("pada","pada2");});
- watch.observe(document.body,{subtree:true,childList:true,characterData:true});
-});
-</script>
 <script type="module">
 import SwissEph from 'https://cdn.jsdelivr.net/gh/prolaxu/swisseph-wasm@v0.1.0/src/swisseph.js';
-const q=new URLSearchParams(location.search),$=id=>document.getElementById(id);
-for(const id of ['name','gender','dob','time','place'])$(id).textContent=q.get(id)||'—';
-const signs=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-const naks=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const nlords=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
-const order=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'],years={'Ketu':7,'Venus':20,'Sun':6,'Moon':10,'Mars':7,'Rahu':18,'Jupiter':16,'Saturn':19,'Mercury':17};
-const norm=x=>(x%360+360)%360, sg=x=>Math.floor(norm(x)/30), ins=x=>norm(x)%30;
-function dms(x){let d=Math.floor(x),m=Math.floor((x-d)*60),s=Math.round((((x-d)*60)-m)*60);if(s>=60){s=0;m++}if(m>=60){m=0;d++}return `${d}° ${m}′ ${s}″`}
-function nk(x){let sp=360/27,i=Math.floor(norm(x)/sp),w=norm(x)-i*sp;return {name:naks[i],lord:nlords[i],pada:Math.floor(w/(sp/4))+1}}
-async function geo(place){let r=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q='+encodeURIComponent(place),{headers:{'Accept-Language':'en'}});let a=await r.json();if(!a.length)throw Error('Birth place not found');return {lat:+a[0].lat,lon:+a[0].lon,label:a[0].display_name}}
-async function zone(lat,lon){let r=await fetch(`https://timeapi.io/api/TimeZone/coordinate?latitude=${lat}&longitude=${lon}`);if(!r.ok)throw Error('Timezone could not be resolved');let a=await r.json();return a.timeZone||a.timezone||a.ianaTimeZone||null}
-function offsetLocal(date,time,z){const [Y,M,D]=date.split('-').map(Number),[h,m]=time.split(':').map(Number),g=new Date(Date.UTC(Y,M-1,D,h,m));const ps=new Intl.DateTimeFormat('en-US',{timeZone:z,timeZoneName:'longOffset',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(g);const v=(ps.find(x=>x.type==='timeZoneName')?.value||'GMT+00:00').match(/GMT([+-])(\d\d):(\d\d)/);return v?(v[1]=='-'?-1:1)*(+v[2]+(+v[3]/60)):0}
-function whole(lon,a){return (sg(lon)-a+12)%12+1}
-function draw(a,ps){for(let h=1;h<=12;h++){let s=(a+h-1)%12,pl=ps.filter(x=>whole(x.lon,a)==h).map(x=>x.sym+' '+x.name).join(' ');$('bh'+h).innerHTML=`<span class="house">House ${h}</span><b>${signs[s]}</b>${pl?'<div class="planets">'+pl+'</div>':''}`}}
-function dash(moon,birth){let n=nk(moon),i=order.indexOf(n.lord),sp=360/27,rem=(1-(norm(moon)%sp)/sp)*years[n.lord],start=new Date(birth),arr=[];for(let j=0;j<9;j++){let L=order[(i+j)%9],end=new Date(start.getTime()+years[L]*365.2425*86400000);arr.push(`<div class="dash"><b>${L}</b><br>${start.toLocaleDateString('en-GB')} → ${end.toLocaleDateString('en-GB')}</div>`);start=end}$('dasha').innerHTML=arr.join('');$('dashanote').textContent=`Birth Nakshatra Lord: ${n.lord}; Estimated balance of first Mahadasha: ${rem.toFixed(2)} years.`}
-async function run(){
-try{
-let swe=new SwissEph();await swe.initSwissEph();$('engine').textContent='Swiss Ephemeris ✓';
-let place=q.get('place')||'',g=await geo(place),z=await zone(g.lat,g.lon);if(!z)throw Error('IANA timezone not found');
-let off=offsetLocal(q.get('dob'),q.get('time'),z),[Y,M,D]=q.get('dob').split('-').map(Number),[h,m]=q.get('time').split(':').map(Number),jd=swe.julday(Y,M,D,h+m/60-off);
-swe.set_sid_mode(swe.SE_SIDM_LAHIRI,0,0);let flags=swe.SEFLG_SWIEPH|swe.SEFLG_SPEED|swe.SEFLG_SIDEREAL;
-let hs=swe.houses_ex(jd,swe.SEFLG_SIDEREAL,g.lat,g.lon,'P'),asc=norm(hs.ascmc[0]),a=sg(asc);
-$('lagna').textContent=signs[a]+' '+dms(ins(asc));$('ayan').textContent=swe.get_ayanamsa_ut(jd).toFixed(4)+'°';$('loc').textContent=`${g.label} • ${g.lat.toFixed(5)}, ${g.lon.toFixed(5)} • ${z} • UTC${off>=0?'+':''}${off}`;
-const specs=[['Sun','Sun','SE_SUN','☉'],['Moon','Moon','SE_MOON','☽'],['Mars','Mars','SE_MARS','♂'],['Mercury','Mercury','SE_MERCURY','☿'],['Jupiter','Jupiter','SE_JUPITER','♃'],['Venus','Venus','SE_VENUS','♀'],['Saturn','Saturn','SE_SATURN','♄'],['Rahu','True Node','SE_TRUE_NODE','☊']];
-let ps=specs.map(([name,key,c,sym])=>{let p=swe.calc_ut(jd,swe[c],flags),lon=norm(p[0]);return{name,sym,lon,speed:p[3],n:nk(lon)}});let r=ps.find(x=>x.name==='Rahu'),kl=norm(r.lon+180);ps.push({name:'Ketu',sym:'☋',lon:kl,speed:-r.speed,n:nk(kl)});
-let moon=ps.find(x=>x.name==='Moon');$('rashi').textContent=signs[sg(moon.lon)];$('nak').textContent=moon.n.name;$('pada').textContent=moon.n.pada;
-$('rows').innerHTML=ps.map(x=>`<tr><td>${x.sym} <b>${x.name}</b></td><td>${signs[sg(x.lon)]}</td><td>${dms(ins(x.lon))}</td><td>${whole(x.lon,a)}</td><td>${x.n.name}</td><td>${x.n.pada}</td><td>${x.name==='Rahu'||x.name==='Ketu'||x.speed<0?'Retrograde ℞':'Direct'}</td></tr>`).join('');
-$('nakinfo').innerHTML=`<span class="tag">Nakshatra: ${moon.n.name}</span><span class="tag">Lord: ${moon.n.lord}</span><span class="tag">Pada: ${moon.n.pada}</span><p class="muted">Moon: ${dms(ins(moon.lon))} ${signs[sg(moon.lon)]}</p>`;
-draw(a,ps);$('coords').textContent=`${g.lat.toFixed(4)}, ${g.lon.toFixed(4)}`;dash(moon.lon,new Date(Date.UTC(Y,M-1,D,h,m)-off*3600000));let hsx=[];for(let i=1;i<=12;i++)hsx.push(`<span class="tag">House ${i}: ${signs[(a+i-1)%12]}</span>`);$('houses').innerHTML=hsx.join('');$('houses2').innerHTML=hsx.join('');
-$('status').textContent='Birth chart ready — computed with exact birth time, resolved coordinates, historical timezone offset, and Lahiri sidereal ephemeris.';swe.close();
-}catch(e){console.error(e);$('status').textContent='Calculation error: '+e.message;$('engine').textContent='Error'}}
+
+const q = new URLSearchParams(location.search);
+const $ = id => document.getElementById(id);
+
+for (const id of ['name', 'gender', 'dob', 'time', 'place']) {
+  $(id).textContent = q.get(id) || '—';
+}
+
+const signs = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const naks = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishta','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const nlords = ['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
+const order = ['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
+const years = {'Ketu':7,'Venus':20,'Sun':6,'Moon':10,'Mars':7,'Rahu':18,'Jupiter':16,'Saturn':19,'Mercury':17};
+
+const norm = x => (x % 360 + 360) % 360;
+const sg = x => Math.floor(norm(x) / 30);
+const ins = x => norm(x) % 30;
+
+function dms(x) {
+  let d = Math.floor(x), m = Math.floor((x - d) * 60), s = Math.round((((x - d) * 60) - m) * 60);
+  if (s >= 60) { s = 0; m++; }
+  if (m >= 60) { m = 0; d++; }
+  return `${d}° ${m}′ ${s}″`;
+}
+
+function nk(x) {
+  let sp = 360 / 27, i = Math.floor(norm(x) / sp), w = norm(x) - i * sp;
+  return { name: naks[i], lord: nlords[i], pada: Math.floor(w / (sp / 4)) + 1 };
+}
+
+async function geo(place) {
+  let r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' + encodeURIComponent(place), {
+    headers: { 'Accept-Language': 'en' }
+  });
+  let a = await r.json();
+  if (!a.length) throw Error('Birth place not found');
+  return { lat: +a[0].lat, lon: +a[0].lon, label: a[0].display_name };
+}
+
+async function zone(lat, lon) {
+  let r = await fetch(`https://timeapi.io/api/TimeZone/coordinate?latitude=${lat}&longitude=${lon}`);
+  if (!r.ok) throw Error('Timezone could not be resolved');
+  let a = await r.json();
+  return a.timeZone || a.timezone || a.ianaTimeZone || null;
+}
+
+function offsetLocal(date, time, z) {
+  const [Y, M, D] = date.split('-').map(Number);
+  const [h, m] = time.split(':').map(Number);
+  const g = new Date(Date.UTC(Y, M - 1, D, h, m));
+  const ps = new Intl.DateTimeFormat('en-US', {
+    timeZone: z,
+    timeZoneName: 'longOffset',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }).formatToParts(g);
+  const v = (ps.find(x => x.type === 'timeZoneName')?.value || 'GMT+00:00').match(/GMT([+-])(\d\d):(\d\d)/);
+  return v ? (v[1] == '-' ? -1 : 1) * (+v[2] + (+v[3] / 60)) : 0;
+}
+
+function whole(lon, a) {
+  return (sg(lon) - a + 12) % 12 + 1;
+}
+
+function draw(a, ps) {
+  for (let h = 1; h <= 12; h++) {
+    let s = (a + h - 1) % 12;
+    let pl = ps.filter(x => whole(x.lon, a) == h).map(x => x.sym + ' ' + x.name).join(' ');
+    $('bh' + h).innerHTML = `<span class="house">House ${h}</span><b>${signs[s]}</b>${pl ? '<div class="planets">' + pl + '</div>' : ''}`;
+  }
+}
+
+function dash(moon, birth) {
+  let n = nk(moon), i = order.indexOf(n.lord), sp = 360 / 27;
+  let rem = (1 - (norm(moon) % sp) / sp) * years[n.lord];
+  let start = new Date(birth), arr = [];
+  for (let j = 0; j < 9; j++) {
+    let L = order[(i + j) % 9];
+    let end = new Date(start.getTime() + years[L] * 365.2425 * 86400000);
+    arr.push(`<div class="dash"><b>${L}</b><br>${start.toLocaleDateString('en-GB')} → ${end.toLocaleDateString('en-GB')}</div>`);
+    start = end;
+  }
+  $('dasha').innerHTML = arr.join('');
+  $('dashanote').textContent = `Birth Nakshatra Lord: ${n.lord}; Estimated balance of first Mahadasha: ${rem.toFixed(2)} years.`;
+}
+
+async function run() {
+  try {
+    let swe = new SwissEph();
+    await swe.initSwissEph();
+    $('engine').textContent = 'Swiss Ephemeris ✓';
+
+    let place = q.get('place') || '';
+    let g = await geo(place);
+    let z = await zone(g.lat, g.lon);
+    if (!z) throw Error('IANA timezone not found');
+
+    let off = offsetLocal(q.get('dob'), q.get('time'), z);
+    let [Y, M, D] = q.get('dob').split('-').map(Number);
+    let [h, m] = q.get('time').split(':').map(Number);
+    let jd = swe.julday(Y, M, D, h + m / 60 - off);
+
+    swe.set_sid_mode(swe.SE_SIDM_LAHIRI, 0, 0);
+    let flags = swe.SEFLG_SWIEPH | swe.SEFLG_SPEED | swe.SEFLG_SIDEREAL;
+
+    let hs = swe.houses_ex(jd, swe.SEFLG_SIDEREAL, g.lat, g.lon, 'P');
+    let asc = norm(hs.ascmc[0]);
+    let a = sg(asc);
+
+    const lagnaText = signs[a] + ' ' + dms(ins(asc));
+    $('lagna').textContent = lagnaText;
+    $('lagna2').textContent = lagnaText;
+
+    $('ayan').textContent = swe.get_ayanamsa_ut(jd).toFixed(4) + '°';
+    $('loc').textContent = `${g.label} • ${g.lat.toFixed(5)}, ${g.lon.toFixed(5)} • ${z} • UTC${off >= 0 ? '+' : ''}${off}`;
+
+    const specs = [
+      ['Sun', 'Sun', 'SE_SUN', '☉'],
+      ['Moon', 'Moon', 'SE_MOON', '☽'],
+      ['Mars', 'Mars', 'SE_MARS', '♂'],
+      ['Mercury', 'Mercury', 'SE_MERCURY', '☿'],
+      ['Jupiter', 'Jupiter', 'SE_JUPITER', '♃'],
+      ['Venus', 'Venus', 'SE_VENUS', '♀'],
+      ['Saturn', 'Saturn', 'SE_SATURN', '♄'],
+      ['Rahu', 'True Node', 'SE_TRUE_NODE', '☊']
+    ];
+
+    let ps = specs.map(([name, key, c, sym]) => {
+      let p = swe.calc_ut(jd, swe[c], flags);
+      let lon = norm(p[0]);
+      return { name, sym, lon, speed: p[3], n: nk(lon) };
+    });
+
+    let r = ps.find(x => x.name === 'Rahu');
+    let kl = norm(r.lon + 180);
+    ps.push({ name: 'Ketu', sym: '☋', lon: kl, speed: -r.speed, n: nk(kl) });
+
+    let moon = ps.find(x => x.name === 'Moon');
+    $('rashi').textContent = signs[sg(moon.lon)];
+    $('rashi2').textContent = signs[sg(moon.lon)];
+    $('nak').textContent = moon.n.name;
+    $('nak2').textContent = moon.n.name;
+    $('pada').textContent = moon.n.pada;
+    $('pada2').textContent = moon.n.pada;
+
+    $('rows').innerHTML = ps.map(x => `<tr>
+      <td>${x.sym} <b>${x.name}</b></td>
+      <td>${signs[sg(x.lon)]}</td>
+      <td>${dms(ins(x.lon))}</td>
+      <td>${whole(x.lon, a)}</td>
+      <td>${x.n.name}</td>
+      <td>${x.n.pada}</td>
+      <td>${x.name === 'Rahu' || x.name === 'Ketu' || x.speed < 0 ? 'Retrograde ℞' : 'Direct'}</td>
+    </tr>`).join('');
+
+    $('nakinfo').innerHTML = `<span class="tag">Nakshatra: ${moon.n.name}</span>
+      <span class="tag">Lord: ${moon.n.lord}</span>
+      <span class="tag">Pada: ${moon.n.pada}</span>
+      <p class="muted">Moon: ${dms(ins(moon.lon))} ${signs[sg(moon.lon)]}</p>`;
+
+    draw(a, ps);
+    $('coords').textContent = `${g.lat.toFixed(4)}, ${g.lon.toFixed(4)}`;
+
+    dash(moon.lon, new Date(Date.UTC(Y, M - 1, D, h, m) - off * 3600000));
+
+    let hsx = [];
+    for (let i = 1; i <= 12; i++) {
+      hsx.push(`<span class="tag">House ${i}: ${signs[(a + i - 1) % 12]}</span>`);
+    }
+    $('houses').innerHTML = hsx.join('');
+    $('houses2').innerHTML = hsx.join('');
+
+    $('status').textContent = 'Birth chart ready — computed with exact birth time, resolved coordinates, historical timezone offset, and Lahiri sidereal ephemeris.';
+    swe.close();
+  } catch (e) {
+    console.error(e);
+    $('status').textContent = 'Calculation error: ' + e.message;
+    $('engine').textContent = 'Error';
+  }
+}
+
 run();
 </script>
 </body>
